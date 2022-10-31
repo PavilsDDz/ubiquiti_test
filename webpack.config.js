@@ -14,15 +14,24 @@ static: './dist',
 },
 module: {
 rules: [
-{
+    {
     test: /\.jsx?$/,
     exclude: /node_modules/,
     loader: 'babel-loader'
-},
-{
+    },
+    {
     test: /\.tsx?$/,
     use: 'ts-loader',
     exclude: /node_modules/,
+    },
+    {
+        exclude: /node_modules/,
+        test: /\.css$/,
+        use: [
+            // Creates `style` nodes from JS strings
+            'style-loader',
+            'css-loader',
+        ],
     },
 ]
 },
