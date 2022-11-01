@@ -8,5 +8,7 @@ export function App() {
     }, [])  
 
 return (
-<></>);
+<>
+    <img src="./test/texture.png" alt="" />
+</>);
 }

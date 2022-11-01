@@ -25,6 +25,23 @@ rules: [
     exclude: /node_modules/,
     },
     {
+        test: /\.(obj|png|jpe?g|gif)$/i,
+        exclude: /node_modules/,
+        use: [
+            {
+            loader: 'file-loader',
+            options: {
+                name: '[name].[ext]',
+                outputPath: 'test/'
+              }
+            },
+        ],
+    },
+    {
+        test: /\.(obj|png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+    },
+    {
         exclude: /node_modules/,
         test: /\.css$/,
         use: [
@@ -36,7 +53,7 @@ rules: [
 ]
 },
 resolve: {
-extensions: ['.tsx', '.ts', '.js'],
+extensions: ['.tsx', '.ts', '.js', '.png', '.obj'],
 },
 plugins:[
 new HtmlWebpackPlugin({
