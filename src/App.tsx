@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { initScene } from './scene';
+import { initScene } from './scene/scene';
 import texture from './recourses/obj/texture.png'
 
 export function App() {
@@ -10,6 +10,5 @@ export function App() {
 
 return (
 <>
-    <img src={texture} alt="no image to load" />
 </>);
 }

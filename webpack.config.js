@@ -25,14 +25,14 @@ rules: [
     exclude: /node_modules/,
     },
     {
-        test: /\.(obj|png|jpe?g|gif)$/i,
+        test: /\.(gltf|obj|png|jpe?g|gif|bin)$/i,
         exclude: /node_modules/,
         use: [
             {
             loader: 'file-loader',
             options: {
                 name: '[name].[ext]',
-                outputPath: './dist/resources'
+                outputPath: './resources'
               }
             },
         ],
@@ -53,7 +53,7 @@ rules: [
 ]
 },
 resolve: {
-extensions: ['.tsx', '.ts', '.js', '.png', '.obj'],
+extensions: ['.tsx', '.ts', '.js', '.png', '.obj', '.gltf', '.bin'],
 },
 plugins:[
 new HtmlWebpackPlugin({

@@ -1,18 +1,30 @@
 import * as THREE from "three"
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import {loadModels} from './loader'
+import * as dat from "dat.gui"
+import { turnOnTheLights } from "./lights";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 export const initScene = () =>{
-        const scene = new THREE.Scene()
+    const scene = new THREE.Scene()
+    
+    // Debug
+
+    const gui = new dat.GUI()
+
+
 
     // Objects
 
-    loadModels(scene)
+    loadModels(scene, gui)
 
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
+
+    // Lights
+
+    turnOnTheLights(scene, gui)
 
     // Sizes
     const sizes = {
@@ -23,6 +35,7 @@ export const initScene = () =>{
     // Camera
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
     camera.position.z = 10
+    camera.position.y = 10
     camera.lookAt(new THREE.Vector3(0,0,0,))
     scene.add(camera)
 
@@ -79,5 +92,8 @@ export const initScene = () =>{
     }
     drawFrame()
 
-
+    // Controls
+    
+    console.log(OrbitControls)
+    const controls = new OrbitControls( camera, renderer.domElement );
 }
