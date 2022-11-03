@@ -1,5 +1,7 @@
 import { Group, Scene } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import wifiModel from './recourses/obj/wifi.obj'
+import * as THREE from 'three'
 
 type iModeLoader = ()=> Promise<Group>
 type iModelLoaders = {[key: string]: iModeLoader}
@@ -12,6 +14,7 @@ export const loadModels = (scene: Scene) => {
     Object.keys(modelLoaders).map((key)=>{
         console.log(key)
         modelLoaders[key]().then((response)=>{
+
             scene.add(response)
         })
     })
@@ -25,9 +28,16 @@ const loadWifi = ()=>{
 
     return new Promise<Group>((resolve)=>{
 
-        loader.load( './recourses/obj/wifi.obj', function ( obj) {
+        loader.load( wifiModel, function ( obj) {
             console.log('resolve')
+            console.log(obj)
 
+
+            obj.children.map((child, index)=>{
+                console.log(child);
+                (child as THREE.Mesh).material = new THREE.MeshBasicMaterial({color: 0xff0000})
+
+            })
             resolve(obj)
         
         }, ()=>{} );
