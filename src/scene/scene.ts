@@ -17,11 +17,6 @@ export const initScene = () =>{
 
     loadModels(scene, gui)
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-    const mesh = new THREE.Mesh(geometry, material)
-    scene.add(mesh)
-
     // Lights
 
     turnOnTheLights(scene, gui)
@@ -67,7 +62,9 @@ export const initScene = () =>{
     const renderer = new THREE.WebGLRenderer({
         canvas: canvas
     })
-
+    const clearColor = new THREE.Color().set(0x154252)
+    renderer.setClearColor(clearColor)
+    // gui.add()
     document.getElementsByTagName('body')[0].appendChild(canvas)
     renderer.setSize(sizes.width, sizes.height)
 
@@ -84,7 +81,7 @@ export const initScene = () =>{
 
         // mesh.rotation.y += 0.001 * time
 
-        mesh.rotation.y = time
+        // mesh.rotation.y = time
 
 
         renderer.render(scene, camera)
