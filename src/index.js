@@ -1,9 +1,17 @@
 import * as React from 'react';
 import {App} from './App';
 import { createRoot } from 'react-dom/client';
-import './index.css';
+
+import 'antd/dist/antd.css';
+import './style.scss';
+
 
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(<App tab="home" />);
+
+// document.addEventListener('click')
+document.getElementsByClassName('menu-trigger')[0].addEventListener('click', ()=>{
+    console.log('menu-triggers')
+})

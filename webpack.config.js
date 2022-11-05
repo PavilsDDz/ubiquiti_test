@@ -25,7 +25,7 @@ rules: [
     exclude: /node_modules/,
     },
     {
-        test: /\.(gltf|obj|png|jpe?g|gif|bin)$/i,
+        test: /\.(gltf|obj|png|jpe?g|gif|bin|ttf)$/i,
         exclude: /node_modules/,
         use: [
             {
@@ -50,10 +50,28 @@ rules: [
             'css-loader',
         ],
     },
+    {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+      {   // Specify ANTD stylesheet in node_modules, to be able to load from index.js
+        include: /node_modules\/antd\/dist\/antd.css/,
+        use: [
+            'style-loader',
+            'css-loader',
+        ],
+    },
 ]
 },
 resolve: {
-extensions: ['.tsx', '.ts', '.js', '.png', '.obj', '.gltf', '.bin'],
+extensions: ['.tsx', '.ts', '.js', '.png', '.obj', '.gltf', '.bin', '.ttf'],
 },
 plugins:[
 new HtmlWebpackPlugin({

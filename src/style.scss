@@ -1,0 +1,78 @@
+$uiColorBg: #134558b9;
+$uiTextColor: #ffffff;
+$uiHeaderSize: 7.2em;
+
+body{
+    margin: 0;
+    font-family: sans-serif;
+    font-weight: 400;
+    width: 100vw;
+    height: 100vw;
+    overflow: hidden;
+    color: $uiTextColor;
+}
+
+h1, h2, h3, h4 {
+    color: $uiTextColor;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .title{
+        position: absolute;
+        top: 0;
+        left: $uiHeaderSize;
+        background-color: $uiColorBg;
+        padding: 0 2rem;
+        height: $uiHeaderSize;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 1.5em;
+        font-weight: 900;
+        letter-spacing: 0.7px;
+        line-height: 1.1em;
+    }
+
+    .menu-trigger {
+        position: absolute;
+        top: 0;
+        left: 0;
+        // font-size: 3em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: content-box;
+        height: $uiHeaderSize;
+        width: $uiHeaderSize;
+        background-color: $uiTextColor;
+        svg{
+            font-size: 3em;
+            color: $uiColorBg;
+        }
+    }
+}
+
+.delete{
+    &-container{
+        background-color: $uiColorBg;
+        padding: 1rem;
+        margin: auto;
+        font-size: 3rem;
+        display: none ;
+    }
+}
+
+// .heder

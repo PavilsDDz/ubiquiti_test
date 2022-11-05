@@ -82,35 +82,11 @@ const loadFloor =  ()=>{
     return new Promise<Group>((resolve)=>{
         
         const texture = new THREE.TextureLoader().load( floorImage, (texture)=>{
-            
-            // gltfLaoder.load(floorModelGLTF, (obj)=>{
-            //     obj.scene.children.map((child, index)=>{
-            //         if(child instanceof THREE.Mesh){
-            //             texture.repeat = new THREE.Vector2(0.5, 0.5)
-            //             texture.wrapS = THREE.RepeatWrapping
-            //             texture.wrapT = THREE.RepeatWrapping
-            //             // child.material.map = texture
-            //             child.material.displacementMap = texture
-            //             // child.material.displacementScale = 20
-            //             // child.material.displacementBias = 10
-
-
-            //             child.material.BumpMap = texture
-            //             child.material.BumpScale = 0.01
-            //             child.material.BumpBias = 1
-
-
-            //         }
-            //         resolve(new THREE.Group().add(child))
-            //     })
-            //     console.log(obj)
-            // })
-
 
             loader.load(floorModel, (group)=>{
                 resolve(group)
                 if(group.children[0] instanceof THREE.Mesh){
-
+                    console.log(group.children[0])
                     group.children[0].material.BumpMap = texture
                     group.children[0].material.BumpScale = 0.5
                     group.children[0].material.BumpBias = 1

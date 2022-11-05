@@ -5,7 +5,7 @@ export const turnOnTheLights = (scene: THREE.Scene, gui: dat.GUI)=>{
     //Ambient light
 
     const ambientLightParametres = {
-        color: 0xffffff,
+        color: 0x3ac6ff,
         intensity: 0.3
 
     }
