@@ -3,6 +3,15 @@ import {loadModels} from './loader'
 import * as dat from "dat.gui"
 import { turnOnTheLights } from "./lights";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { addUserEvents, iUserEventsData } from "./userEvents";
+import { Plane } from "three";
+
+
+
+export const userEvents = {
+    
+}
+
 
 export const initScene = () =>{
     const scene = new THREE.Scene()
@@ -15,7 +24,9 @@ export const initScene = () =>{
 
 
     // Objects
-
+    const raycasterTargets = new THREE.Object3D()
+    raycasterTargets.name = 'raycasterTargets'
+    scene.add(raycasterTargets)
     loadModels(scene, gui)
 
     // Lights
@@ -62,7 +73,65 @@ export const initScene = () =>{
         })
 
 
+    
+    // Scene events
+
+    // Renderer
+    const canvas = document.createElement('canvas')
+
+
+    const  rendererParameters = {
+        clearColor: 0xcabeb1
+    } 
+
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+    })
+    const clearColor = new THREE.Color().set(rendererParameters.clearColor)
+    renderer.setClearColor(clearColor)
+
+    document.getElementsByTagName('body')[0].appendChild(canvas)
+    renderer.setSize(sizes.width, sizes.height)
+    
+    const rendererGui = gui.addFolder('Renderer')
+        rendererGui.addColor(rendererParameters, 'clearColor').onChange((value)=>{
+            renderer.setClearColor(new THREE.Color().set(value))
+        })
+    
+    
+    // Controls
+    
+    console.log(OrbitControls)
+    const controls = new OrbitControls( camera, renderer.domElement );
+
+    //Raycaster
+    
+    const raycaster = new THREE.Raycaster();
+
+    const raycastPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 20),
+        new THREE.MeshBasicMaterial({wireframe: true})
+    )
+    raycastPlane.name = 'raycastPlane'
+    // raycastPlane.visible = false
+
+
+    // raycasterTargets.add(raycastPlane)
+
+    // const raycastPlaneAxes = new THREE.AxesHelper(20)
+    // raycastPlane.add(raycastPlaneAxes)
+    // raycastPlane.
+    // raycastPlane.lookAt(camera.position)
+
     // Events
+    const userEventData:iUserEventsData = {
+        intersects: [],
+        pointer:  new THREE.Vector2(),
+        scene
+    }
+
+    addUserEvents(userEventData)
 
     // HTML events
 
@@ -79,81 +148,25 @@ export const initScene = () =>{
         renderer.setSize(sizes.width, sizes.height)
     })
 
-    // const onAddWifiClick ()=>{
-    //     console.log('Wifi click')
-    // }
 
-    // const addWifiClickObject = {
-    //     addWifi: onAddWifiClick
-    // }
 
-    // gui.add(addWifiClickObject, 'addWifi').name()
-
-    // Scene events
-
-    // Renderer
-    const canvas = document.createElement('canvas')
-    
-    // const ambientLightParametres = {
-    //     color: 0xffffff,
-    //     intensity: 0.3
-
-    // }
-
-    // const ambientLight = new THREE. AmbientLight()
-    // ambientLight.color = new THREE.Color(ambientLightParametres.color)
-    // ambientLight.intensity = ambientLightParametres.intensity
-
-    // const ambientLightGui = gui.addFolder('Ambient light')
-    //     ambientLightGui.addColor(ambientLightParametres, 'color').onChange(()=>{
-    //         ambientLight.color = new THREE.Color().set(ambientLightParametres.color)
-    //     })
-    //     ambientLightGui.add(ambientLightParametres, 'intensity', 0, 6, 0.1).onChange((value)=>{
-    //         ambientLight.intensity = value;
-    //     })
-
-    const  rendererParametres = {
-        clearColor: 0xcabeb1
-    } 
-
-    const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        antialias: true,
-    })
-    const clearColor = new THREE.Color().set(rendererParametres.clearColor)
-    renderer.setClearColor(clearColor)
-    // gui.add()
-    document.getElementsByTagName('body')[0].appendChild(canvas)
-    renderer.setSize(sizes.width, sizes.height)
-    
-    const rendererGui = gui.addFolder('Renderer')
-        rendererGui.addColor(rendererParametres, 'clearColor').onChange((value)=>{
-            renderer.setClearColor(new THREE.Color().set(value))
-        })
 
 
     // Animation
-    // let timeStart = Date.now()
-    const clock = new THREE.Clock()
 
+    const clock = new THREE.Clock()
     const drawFrame = ()=>{
         const time = clock.getElapsedTime()
-        // const  timeNow = Date.now()
-        // const time = timeNow - timeStart
-        // timeStart = timeNow
 
-        // mesh.rotation.y += 0.001 * time
-
-        // mesh.rotation.y = time
-
-
+        
+        
+        raycaster.setFromCamera( userEventData.pointer, camera );
+        userEventData.intersects = raycaster.intersectObjects( raycasterTargets.children );
+        // console.log(scene.children)
+        // console.log(userEventData.intersects)
         renderer.render(scene, camera)
         window.requestAnimationFrame(drawFrame)
     }
     drawFrame()
 
-    // Controls
-    
-    console.log(OrbitControls)
-    const controls = new OrbitControls( camera, renderer.domElement );
 }

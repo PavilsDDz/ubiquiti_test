@@ -1,6 +1,10 @@
 $uiColorBg: #134558b9;
-$uiTextColor: #ffffff;
-$uiHeaderSize: 7.2em;
+$uiColorBgActive: rgba(81, 146, 172, 0.897);
+$uiTextColor: #ffffffee;
+$uiTextColorActive: #ffffffff;
+$uiHeaderSize: 6.2em;
+$uiAnimationLength: 0.25s;
+$uiLetterSpacing: 0.07em;
 
 body{
     margin: 0;
@@ -16,6 +20,11 @@ h1, h2, h3, h4 {
     color: $uiTextColor;
 }
 
+ul, li{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 .header {
     position: absolute;
     top: 0;
@@ -27,7 +36,7 @@ h1, h2, h3, h4 {
     .title{
         position: absolute;
         top: 0;
-        left: $uiHeaderSize;
+        left: calc(#{$uiHeaderSize} + 2px);
         background-color: $uiColorBg;
         padding: 0 2rem;
         height: $uiHeaderSize;
@@ -40,9 +49,9 @@ h1, h2, h3, h4 {
 
     h1 {
         margin: 0;
-        font-size: 1.5em;
+        font-size: 1.4em;
         font-weight: 900;
-        letter-spacing: 0.7px;
+        letter-spacing: $uiLetterSpacing;
         line-height: 1.1em;
     }
 
@@ -58,12 +67,93 @@ h1, h2, h3, h4 {
         height: $uiHeaderSize;
         width: $uiHeaderSize;
         background-color: $uiTextColor;
-        svg{
+        
+        transition: all $uiAnimationLength;
+
+        cursor: pointer;
+
+        &:hover{
+            background-color: $uiTextColorActive;
+
+            .icon{
+                color: $uiColorBgActive;
+            }
+        }
+
+        .icon{
             font-size: 3em;
             color: $uiColorBg;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: all $uiAnimationLength;
+           
+
+            &.close{
+                opacity: 0;
+            }
+        }
+    }
+
+}
+
+.menu{
+
+    #mainMenu{
+        background-color: $uiColorBg;
+        position: absolute;
+        top: calc(#{$uiHeaderSize} + 2px);
+        left: 0;
+        margin: 0;
+        padding: 2rem;
+        opacity: 0;
+        // height: 0;
+        overflow: hidden;
+        transform: translate(-25%, -50%) scale(0.5, 0) ;
+        transition: all $uiAnimationLength;
+        
+        
+
+        
+        li{
+            border-top: solid 1px $uiTextColor;
+            padding: 0.5em 1em;
+            text-align: center;
+            background-color: rgba(0,0,0,0);
+            transition: all $uiAnimationLength;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: $uiLetterSpacing;
+            &:hover{
+                background-color: $uiColorBgActive;
+            }
+        }
+    }
+    &.opened{
+        #mainMenu{
+            height: auto;
+            opacity: 1;
+            transform: translate(0, 0) scale(1, 1) ;
+        }
+
+        .icon{
+            &.open {
+                opacity: 0;
+            }
+            &.close {
+                opacity: 1;
+            }
         }
     }
 }
+
+
 
 .delete{
     &-container{
@@ -74,5 +164,4 @@ h1, h2, h3, h4 {
         display: none ;
     }
 }
-
 // .heder

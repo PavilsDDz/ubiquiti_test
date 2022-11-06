@@ -12,6 +12,3 @@ const root = createRoot(container);
 root.render(<App tab="home" />);
 
 // document.addEventListener('click')
-document.getElementsByClassName('menu-trigger')[0].addEventListener('click', ()=>{
-    console.log('menu-triggers')
-})
