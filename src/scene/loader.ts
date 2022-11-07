@@ -109,6 +109,9 @@ modelLoaders['floor'] = loadFloor
 const loadWalls = (gui: dat.GUI, scene: THREE.Scene )=>{
     return new Promise<Group>(( resolve )=>{
         loader.load(wallsModel, (group)=>{
+            group.children.map((child)=>{
+                child.name = 'wall'
+            })
             group.name = 'walls'
 
             if(group instanceof THREE.Group){

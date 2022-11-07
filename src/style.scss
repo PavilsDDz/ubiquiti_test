@@ -52,14 +52,13 @@ ul, li{
         font-size: 1.4em;
         font-weight: 900;
         letter-spacing: $uiLetterSpacing;
-        line-height: 1.1em;
+        line-height: 1.2em;
     }
 
-    .menu-trigger {
+    div[class*='trigger']{
+        
         position: absolute;
         top: 0;
-        left: 0;
-        // font-size: 3em;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -100,6 +99,19 @@ ul, li{
             }
         }
     }
+    
+    .info-trigger{
+        right: 0;
+        
+    }
+
+    .menu-trigger {
+        left: 0;
+        // font-size: 3em;
+       
+
+        
+    }
 
 }
 
@@ -135,19 +147,22 @@ ul, li{
             }
         }
     }
+
     &.opened{
         #mainMenu{
             height: auto;
             opacity: 1;
             transform: translate(0, 0) scale(1, 1) ;
         }
-
-        .icon{
-            &.open {
-                opacity: 0;
-            }
-            &.close {
-                opacity: 1;
+        
+        div[class*='trigger']{
+            .icon{
+                &.open {
+                    opacity: 0;
+                }
+                &.close {
+                    opacity: 1;
+                }
             }
         }
     }

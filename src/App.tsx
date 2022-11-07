@@ -3,7 +3,6 @@ import { initScene } from './scene/scene';
 import texture from './recourses/obj/texture.png'
 import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp';
 import MenuSharpIcon from '@mui/icons-material/MenuSharp';
-import { Button, Dropdown, Menu } from 'antd';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
@@ -53,15 +52,25 @@ return (
                 <menu id='mainMenu'>
                     <ul>
                         <li id='addWifiMouseDown'>Add Wifi</li>
-                        <li><InfoOutlinedIcon/></li>
                     </ul>
                 </menu>
+            </div>
+
+            <div className='info-trigger'>
+                <div className='icon'>
+
+                    <InfoOutlinedIcon fontSize='inherit'/>
+                </div>
+                <div className='menu'>
+
+                </div>
             </div>
 
 
             <div className='delete-container'>
                 <DeleteOutlineSharpIcon fontSize="inherit"></DeleteOutlineSharpIcon>
             </div>
+            
         </div>
     </div>
 </>);

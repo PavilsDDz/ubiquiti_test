@@ -19,6 +19,9 @@ export const initScene = () =>{
     // Debug
 
     const gui = new dat.GUI()
+    gui.domElement.id = 'gui'
+    gui.domElement.parentElement.style.bottom = '20px'
+    gui.domElement.parentElement.style.top = 'auto'
     gui.closed = true
 
 
@@ -27,6 +30,11 @@ export const initScene = () =>{
     const raycasterTargets = new THREE.Object3D()
     raycasterTargets.name = 'raycasterTargets'
     scene.add(raycasterTargets)
+
+    const userObjects = new THREE.Group()
+    userObjects.name =  'userObjects'
+    scene.add(userObjects)
+    
     loadModels(scene, gui)
 
     // Lights
@@ -78,6 +86,7 @@ export const initScene = () =>{
 
     // Renderer
     const canvas = document.createElement('canvas')
+    canvas.id = 'renderCanvas'
 
 
     const  rendererParameters = {
@@ -104,6 +113,7 @@ export const initScene = () =>{
     
     console.log(OrbitControls)
     const controls = new OrbitControls( camera, renderer.domElement );
+    // const orbitControlsActive = false
 
     //Raycaster
     
@@ -128,9 +138,9 @@ export const initScene = () =>{
     const userEventData:iUserEventsData = {
         intersects: [],
         pointer:  new THREE.Vector2(),
-        scene
+        scene: scene,
+        orbitControls: controls
     }
-
     addUserEvents(userEventData)
 
     // HTML events
@@ -161,7 +171,7 @@ export const initScene = () =>{
         
         
         raycaster.setFromCamera( userEventData.pointer, camera );
-        userEventData.intersects = raycaster.intersectObjects( raycasterTargets.children );
+        userEventData.intersects = raycaster.intersectObjects( [...raycasterTargets.children, userObjects] );
         // console.log(scene.children)
         // console.log(userEventData.intersects)
         renderer.render(scene, camera)
