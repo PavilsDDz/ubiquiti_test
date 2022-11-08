@@ -34,6 +34,7 @@ export interface iUserEventsData{
 
 export const addUserEvents = (args: iUserEventsData)=>{
     
+    console.log(args.scene)
     
     let activeObject:THREE.Object3D = null
     let grabbed: boolean = false
@@ -175,14 +176,7 @@ export const addUserEvents = (args: iUserEventsData)=>{
     const deleteObject = (event: any)=>{
         if((event.target as HTMLElement).id === userEventKeys.deleteObject){
             console.log(activeObject)
-            
-            args.scene.remove(activeObject)
-            args.scene.remove(args.scene.children[0])
-            args.scene.remove(args.scene.children[2])
-            args.scene.remove(args.scene.children[1])
-            args.scene.remove(args.scene.children[4])
-            args.scene.remove(args.scene.children[5])
-            args.scene.remove(args.scene.children[6])
+            userObjects.remove(activeObject)
             console.log(args.scene)
             activeObject = null
             args.setActiveObject(null)
