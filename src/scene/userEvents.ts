@@ -8,12 +8,15 @@ export enum userEventKeys {
     'canvasMouseDown' = 'canvasMouseDown',
     // 'canvasMouseUp' = 'canvasMouseUp',
     'mouseMove' = 'mouseMove',
+    'deleteObject' = 'deleteObject',
+
 }
 
 export const userEvents:{[key in userEventKeys]: ()=>void} = {
     addWifiMouseDown: ()=>{},
     mouseMove: ()=>{},
     canvasMouseDown: ()=>{},
+    deleteObject: ()=>{}
     // canvasMouseUp: ()=>{}
 }
 
@@ -22,24 +25,51 @@ export interface iUserEventsData{
     scene: THREE.Scene,
     pointer: THREE.Vector2,
     intersects: THREE.Intersection<THREE.Object3D<Event>>[],
-    orbitControls: OrbitControls
+    orbitControls: OrbitControls,
+    activeObject: THREE.Object3D,
+    setActiveObject: React.Dispatch<React.SetStateAction<THREE.Object3D>>
 
 } 
 
-export const addUserEvents = (args: iUserEventsData)=>{
 
+export const addUserEvents = (args: iUserEventsData)=>{
+    
     
     let activeObject:THREE.Object3D = null
+    let grabbed: boolean = false
+    
+    const userObjects = args.scene.getObjectByName('userObjects')
+
+    // const setActiveObject = (object: THREE.Object3D)=>{
+    
+    //     const outlineObject = object.clone()
+    //     const outlineMaterial = new THREE.MeshBasicMaterial({color: 0xffaa00})
+    //     outlineObject.children.map((child)=>{
+    //         if(child instanceof THREE.Mesh){
+    //             child.material = outlineMaterial
+    
+    //         }
+    //     })
+    //     outlineObject.scale.set(1.1,1.1, 1.1)
+    //     object.add(outlineObject)
+    //     userObjects.add(object)
+
+    //     return object
+    // }
     
 
-    const userObjects = args.scene.getObjectByName('userObjects')
+    // const userObjects = args.scene.getObjectByName('userObjects')
 
     const addWifiMouseUp = (event: any) =>{
         // console.log('mouse up')
         // document.removeEventListener('mousedown', addWifiMouseDown, false)
+        
         document.removeEventListener('mouseup', addWifiMouseUp, false)
-        activeObject = null
-        document.getElementsByTagName('body')[0].classList.remove('active-3d-object')
+        // args.setActiveObject(null)
+        grabbed = false
+        
+        // activeObject = null
+        document.body.classList.remove('active-3d-object')
 
         
     }
@@ -51,11 +81,14 @@ export const addUserEvents = (args: iUserEventsData)=>{
         if((event.target as HTMLElement).id === userEventKeys.addWifiMouseDown ){
             // console.log('mouseDown')
             document.addEventListener('mouseup', addWifiMouseUp)
+            // activeObject = setActiveObject(models['wifi'].clone())
             activeObject = models['wifi'].clone()
             activeObject.name = 'user-wifi'
             // console.log(args.scene)
+            args.setActiveObject(activeObject)
+            grabbed = true
             userObjects.add(activeObject)
-            document.getElementsByTagName('body')[0].classList.add('active-3d-object')
+            document.body.classList.add('active-3d-object')
         }
     }
 
@@ -68,17 +101,26 @@ export const addUserEvents = (args: iUserEventsData)=>{
             ( event.clientX / window.innerWidth ) * 2 - 1,
             - ( event.clientY / window.innerHeight ) * 2 + 1
         )
+            // console.log(grabbed, args.intersects[0].object)
+        if(!args.intersects[0]) return;
 
-        if(!activeObject) return
+        if(!grabbed && args.intersects[0].object.parent.name === 'user-wifi'){
+            document.body.style.cursor = 'grab'
+        }else{
+            document.body.style.cursor = 'auto'
+        }
 
-        // if(activeObject )
+        if(!activeObject || !grabbed) return
+        
+
+        if(document.body.style.cursor !== 'grabbing' ){
+            document.body.style.cursor = 'grabbing'
+        }
         
         for (let i = 0; i < args.intersects.length; i++) {
             if(args.intersects[i].object.name === 'wall'){
  
-                console.log(args.intersects[i])
                 activeObject.position.copy(args.intersects[i].point)
-                console.log(activeObject.position)
                 const n = args.intersects[ i ].face.normal.clone();
                 n.transformDirection( models.walls.matrixWorld );
                 // n.multiplyScalar( 10 );
@@ -98,9 +140,13 @@ export const addUserEvents = (args: iUserEventsData)=>{
     const canvasMouseUp = (event: any) => {
         document.removeEventListener('mouseup', addWifiMouseUp, false)
         args.orbitControls.enabled = true
-
+        document.body.style.cursor = 'auto'
+        
         if(activeObject){
-            activeObject = null
+
+            // activeObject = null
+            grabbed = false
+            // args.setActiveObject(null)
         }
 
     }
@@ -109,19 +155,44 @@ export const addUserEvents = (args: iUserEventsData)=>{
 
         if((event.target as HTMLElement).id === 'renderCanvas'){
 
+            if(!args.intersects[0] || args.intersects[0].object.parent.name !== 'user-wifi') {
+                args.setActiveObject(null)
+                activeObject = null
+                return;
+            }
+            
             if(args.intersects[0].object.parent.name === 'user-wifi'){
+                document.body.style.cursor = 'grabbing'
                 activeObject = args.intersects[0].object.parent
+                grabbed = true
+                args.setActiveObject(activeObject)
                 document.addEventListener('mouseup', canvasMouseUp)
                 args.orbitControls.enabled = false
             }
         }
     }
+
+    const deleteObject = (event: any)=>{
+        if((event.target as HTMLElement).id === userEventKeys.deleteObject){
+            console.log(activeObject)
+            
+            args.scene.remove(activeObject)
+            args.scene.remove(args.scene.children[0])
+            args.scene.remove(args.scene.children[2])
+            args.scene.remove(args.scene.children[1])
+            args.scene.remove(args.scene.children[4])
+            args.scene.remove(args.scene.children[5])
+            args.scene.remove(args.scene.children[6])
+            console.log(args.scene)
+            activeObject = null
+            args.setActiveObject(null)
+        }
     
+    }
     
-    
-    console.log('Add use events')
     document.addEventListener('mousedown', addWifiMouseDown)
     document.addEventListener('mousedown', canvasMouseDown)
+    document.addEventListener('click', deleteObject)
     // document.addEventListener('mousedown', canvasMouseUp)
     document.addEventListener('pointermove', mouseMove)
     

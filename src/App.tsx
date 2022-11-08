@@ -10,6 +10,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 export function App() {
 
     const [menuOpened, setMenuOpened] = React.useState<boolean>(false)
+    const [activeObject, setActiveObject] = React.useState<THREE.Object3D>(null)
 
     // const onMenuTriggerClick()
 
@@ -22,12 +23,16 @@ export function App() {
 
     // }, [])
 
+    React.useEffect(()=>{
+        console.log(activeObject)
+    }, [activeObject])
+
     const toggleMenuOpened = ()=>{
         setMenuOpened(!menuOpened)    
     }
 
     React.useEffect(()=>{
-        initScene()
+        initScene(activeObject, setActiveObject)
     }, [])  
 
 return (
@@ -49,7 +54,7 @@ return (
                         <CloseOutlinedIcon fontSize="inherit" />
                     </div>
                 </div>
-                <menu id='mainMenu'>
+                <menu id='mainMenu' className='menu-box'>
                     <ul>
                         <li id='addWifiMouseDown'>Add Wifi</li>
                     </ul>
@@ -58,12 +63,24 @@ return (
 
             <div className='info-trigger'>
                 <div className='icon'>
-
                     <InfoOutlinedIcon fontSize='inherit'/>
                 </div>
-                <div className='menu'>
-
+                <div className='info-content'>
+                    this is info
                 </div>
+                {activeObject ? <>
+                    <div className='menu-box' id='object-properties'>
+                        <ul>
+                            <li id='deleteObject'>
+                                Delete object
+                            </li>
+                            <li id='showRange'>
+                                <label htmlFor="show-range">Show range</label>
+                                <input type="checkbox" name="" id="show-range" />
+                            </li>
+                        </ul>
+                    </div>
+                </> : <></>}
             </div>
 
 

@@ -115,35 +115,48 @@ ul, li{
 
 }
 
+.menu-box{
+    background-color: $uiColorBg;
+    position: absolute;
+    padding: 2rem;
+    top: calc(#{$uiHeaderSize} + 2px);
+    margin: 0;
+    overflow: hidden;
+
+    li{
+        border-top: solid 1px $uiTextColor;
+        padding: 0.5em 1em;
+        text-align: center;
+        background-color: rgba(0,0,0,0);
+        transition: all $uiAnimationLength;
+        cursor: grab;
+        font-weight: 600;
+        user-select: none;
+        letter-spacing: $uiLetterSpacing;
+        &:hover{
+            background-color: $uiColorBgActive;
+        }
+    }
+
+
+}
+
 .menu{
 
     #mainMenu{
-        background-color: $uiColorBg;
-        position: absolute;
-        top: calc(#{$uiHeaderSize} + 2px);
+        
+        
         left: 0;
-        margin: 0;
-        padding: 2rem;
+      
         opacity: 0;
         // height: 0;
-        overflow: hidden;
         transform: translate(-25%, -50%) scale(0.5, 0) ;
         transition: all $uiAnimationLength;
         
-        
-
-        
         li{
-            border-top: solid 1px $uiTextColor;
-            padding: 0.5em 1em;
-            text-align: center;
-            background-color: rgba(0,0,0,0);
-            transition: all $uiAnimationLength;
-            cursor: pointer;
-            font-weight: 600;
-            letter-spacing: $uiLetterSpacing;
-            &:hover{
-                background-color: $uiColorBgActive;
+            
+            &:active{
+                cursor: grabbing;
             }
         }
     }
@@ -168,6 +181,37 @@ ul, li{
     }
 }
 
+#object-properties{
+    width: 10em;
+    right: 0;
+}
+#show-range-li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-content{
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    background-color: $uiColorBg;
+    padding: 2em;
+    width: 16em;
+    transform: translate(100%, -50%) scale(0, 0) ;
+    // transform: ;
+    opacity: 0;
+    transition: all $uiAnimationLength;
+    z-index: 1;
+}
+
+.icon{
+    &:hover + .info-content{
+        transform: translate(0%, 0%) scale(1, 1) ;
+        opacity: 1;
+        
+    }
+}
 
 
 .delete{

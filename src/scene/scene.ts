@@ -1,3 +1,4 @@
+import * as React from "react"
 import * as THREE from "three"
 import {loadModels} from './loader'
 import * as dat from "dat.gui"
@@ -13,7 +14,7 @@ export const userEvents = {
 }
 
 
-export const initScene = () =>{
+export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.Dispatch<React.SetStateAction<THREE.Object3D>>) =>{
     const scene = new THREE.Scene()
     
     // Debug
@@ -139,7 +140,9 @@ export const initScene = () =>{
         intersects: [],
         pointer:  new THREE.Vector2(),
         scene: scene,
-        orbitControls: controls
+        orbitControls: controls,
+        activeObject,
+        setActiveObject
     }
     addUserEvents(userEventData)
 
