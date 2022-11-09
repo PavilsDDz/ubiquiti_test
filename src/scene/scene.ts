@@ -15,15 +15,20 @@ export const userEvents = {
 
 
 export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.Dispatch<React.SetStateAction<THREE.Object3D>>) =>{
-    const scene = new THREE.Scene()
     
+    const scene = new THREE.Scene()
+    scene.fog = new THREE.Fog(0xc6ddff, 10, 40)
     // Debug
 
     const gui = new dat.GUI()
     gui.domElement.id = 'gui'
-    gui.domElement.parentElement.style.bottom = '20px'
-    gui.domElement.parentElement.style.top = 'auto'
+    // gui.e
+    gui.domElement.parentElement.style.right = '8em'
+    // gui.domElement.parentElement.style.top = 'auto'
     gui.closed = true
+
+    // gui.addColor(scene.fog, 'color').name('Fog color').onChange((value)=>{
+    // })
 
 
 
@@ -51,7 +56,7 @@ export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.D
     // Camera
     const cameraProperties = {
         position: new THREE.Vector3(-12, 2.88, -1.3),
-        lookAt: new THREE.Vector3(0, 0, 0),
+        lookAt: new THREE.Vector3(-4, 0, 0),
         maxDistance: 15
     }  
 
@@ -61,7 +66,7 @@ export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.D
         cameraProperties.position.y,
         cameraProperties.position.z,
         ) 
-    camera.lookAt(new THREE.Vector3(0,0,0,))
+    camera.lookAt(new THREE.Vector3(-4,0,0,))
     scene.add(camera)
 
     const cameraGui = gui.addFolder('Camera')
@@ -91,7 +96,7 @@ export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.D
 
 
     const  rendererParameters = {
-        clearColor: 0xcabeb1
+        clearColor: 0xc6ddff
     } 
 
     const renderer = new THREE.WebGLRenderer({
@@ -107,6 +112,8 @@ export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.D
     const rendererGui = gui.addFolder('Renderer')
         rendererGui.addColor(rendererParameters, 'clearColor').onChange((value)=>{
             renderer.setClearColor(new THREE.Color().set(value))
+            scene.fog.color.set(value)
+
         })
     
     
@@ -114,6 +121,9 @@ export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.D
     
     console.log(OrbitControls)
     const controls = new OrbitControls( camera, renderer.domElement );
+    controls.maxDistance = 13
+    controls.maxPolarAngle = Math.PI /2.5
+    controls.enablePan = true
     // const orbitControlsActive = false
 
     //Raycaster
