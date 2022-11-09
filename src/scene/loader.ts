@@ -1,21 +1,14 @@
 import { Group, Material, Scene, Vector3 } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import wifiModel from '../recourses/obj/wifi.obj'
 import floorModel from '../recourses/obj/floor.obj'
 import bushesModel from '../recourses/obj/bushes.obj'
-import floorMaterial from '../recourses/obj/floor.mtl'
-import interiorMaterials from '../recourses/obj/interior.mtl'
-import interior from '../recourses/obj/interior.obj'
-import interiorGLTF from '../recourses/gltf/interior.gltf'
-import floorModelGLTF from '../recourses/gltf/floor.gltf'
+import wallsModel from '../recourses/obj/walls.obj'
+import interiorModel from '../recourses/obj/interior.obj'
+import groundModel from '../recourses/obj/ground.obj'
 import * as THREE from 'three'
 import floorImage from '../recourses/floor-texture-bump.png';
-
-import wallsModel from '../recourses/obj/walls.obj'
-import { color } from '@mui/system';
 
 type iModeLoader = (gui: dat.GUI, scene: THREE.Scene)=> Promise<Group>
 type iModelLoaders = {[key in availableModels]?: iModeLoader}
@@ -28,6 +21,7 @@ export enum availableModels {
     'floor' = 'floor',
     'interior' = 'interior',
     'bushes' = 'bushes',
+    'ground' = 'ground'
 }
 
 export const models:{[key in availableModels]?:THREE.Object3D} = {}
@@ -86,21 +80,16 @@ modelLoaders['wifi'] = loadWifi
 const loadFloor = (gui: dat.GUI, scene: THREE.Scene )=>{
     return new Promise<Group>((resolve)=>{
         
-        const texture = new THREE.TextureLoader().load( floorImage, (texture)=>{
 
-            loader.load(floorModel, (group)=>{
-                if(group.children[0] instanceof THREE.Mesh){
-                    console.log(group.children[0])
-                    group.children[0].material.color.set(0x444444)
-                }
-                group.name = 'floor'
-                scene.add(group)
-                resolve(group)
-            })
-
-
-
-        } );
+        loader.load(floorModel, (group)=>{
+            if(group.children[0] instanceof THREE.Mesh){
+                console.log(group.children[0])
+                group.children[0].material.color.set(0x444444)
+            }
+            group.name = 'floor'
+            scene.add(group)
+            resolve(group)
+        })
             
     })
 }
@@ -168,7 +157,7 @@ const loadInterior = (gui: dat.GUI, scene: THREE.Scene)=>{
             ]
 
 
-            loader.load(interior, (group)=>{
+            loader.load(interiorModel, (group)=>{
                 group.children.map((child)=>{
                     if(child instanceof THREE.Mesh){
                         const matId = parseInt(child.name[child.name.indexOf('_mat') + 4])
@@ -193,12 +182,24 @@ const loadBushes = (gui: dat.GUI, scene: THREE.Scene)=>{
     const bushesGui = gui.addFolder('Bushes')
      return new Promise<Group>((resolve)=>{
 
-         loader.load(bushesModel,(group)=>{
+        const bushColors:number[] = [
+            0x51b197,
+            0x77c388,
+            0x289b56,
+            0x6dbb9e,
+            0x417a56,
+            0x21704b
+        ]
+
+            loader.load(bushesModel,(group)=>{
              scene.add(group)
-             group.children.map(child=>{
+             group.children.map((child, index)=>{
                 if(child instanceof THREE.Mesh){
-                    bushesGui.addColor({color: 0x77aa99}, 'color').onChange((value)=>{
-                        child.material.color.set(value) 
+
+                    child.material = new THREE.MeshPhongMaterial({color: bushColors[index] ? bushColors[index] :  0x21704b })
+                    child.material.color.se
+                    bushesGui.addColor({color: bushColors[index]}, 'color').onChange((value)=>{
+                        child.material.color.set(value)
                     })
                 }
              })
@@ -209,3 +210,16 @@ const loadBushes = (gui: dat.GUI, scene: THREE.Scene)=>{
 
 modelLoaders['bushes'] = loadBushes
 
+const loadGround = (gui: dat.GUI, scene: THREE.Scene) =>{
+    return new Promise<Group>((resolve)=>{
+        loader.load(groundModel, (group)=>{
+            if(group.children[0] instanceof THREE.Mesh){
+                scene.add(group)
+                resolve(group)
+            }
+        })
+        resolve
+    })
+}
+
+modelLoaders['ground'] = loadGround

@@ -66,22 +66,26 @@ export const initScene = (activeObject: THREE.Object3D, setActiveObject: React.D
         cameraProperties.position.y,
         cameraProperties.position.z,
         ) 
-    camera.lookAt(new THREE.Vector3(-4,0,0,))
-    scene.add(camera)
+    camera.lookAt(new THREE.Vector3(0,0,0,))
+
+    const cameraObj = new THREE.Object3D()
+    cameraObj.add(camera)
+    
+    scene.add(cameraObj)
 
     const cameraGui = gui.addFolder('Camera')
-        cameraGui.add(cameraProperties.position, 'x', -cameraProperties.maxDistance, cameraProperties.maxDistance, 0.01).onChange((value)=>{
-            camera.position.x = value
+        cameraGui.add(cameraObj.position, 'x', -cameraProperties.maxDistance, cameraProperties.maxDistance, 0.01).onChange((value)=>{
+            cameraObj.position.x = value
             camera.lookAt(cameraProperties.lookAt)
 
         })
-        cameraGui.add(cameraProperties.position, 'y', -cameraProperties.maxDistance, cameraProperties.maxDistance, 0.01).onChange((value)=>{
-            camera.position.y = value
+        cameraGui.add(cameraObj.position, 'y', -cameraProperties.maxDistance, cameraProperties.maxDistance, 0.01).onChange((value)=>{
+            cameraObj.position.y = value
             camera.lookAt(cameraProperties.lookAt)
 
         })
-        cameraGui.add(cameraProperties.position, 'z', -cameraProperties.maxDistance, cameraProperties.maxDistance, 0.01).onChange((value)=>{
-            camera.position.z = value
+        cameraGui.add(cameraObj.position, 'z', -cameraProperties.maxDistance, cameraProperties.maxDistance, 0.01).onChange((value)=>{
+            cameraObj.position.z = value
             camera.lookAt(cameraProperties.lookAt)
 
         })

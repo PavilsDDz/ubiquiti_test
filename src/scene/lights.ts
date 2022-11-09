@@ -134,11 +134,8 @@ export const turnOnTheLights = (scene: THREE.Scene, gui: dat.GUI)=>{
         })
 
         pointLightGui.add(pointLightHelper, 'visible')
-
-
         
     }
 
 
-    // const 
 }

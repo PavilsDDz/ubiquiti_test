@@ -1,4 +1,4 @@
-$uiColorBg: #134558b9;
+$uiColorBg: #444444;
 $uiColorBgActive: rgba(81, 146, 172, 0.897);
 $uiTextColor: #ffffffee;
 $uiTextColorActive: #ffffffff;
@@ -203,6 +203,10 @@ ul, li{
     opacity: 0;
     transition: all $uiAnimationLength;
     z-index: 1;
+    
+    li{
+        margin-top: 1em
+    }
 }
 
 .icon{

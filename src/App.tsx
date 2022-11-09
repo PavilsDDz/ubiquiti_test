@@ -12,17 +12,6 @@ export function App() {
     const [menuOpened, setMenuOpened] = React.useState<boolean>(false)
     const [activeObject, setActiveObject] = React.useState<THREE.Object3D>(null)
 
-    // const onMenuTriggerClick()
-
-    // React.useEffect(()=>{
-
-    //     document.getElementsByClassName('menu-trigger')[0].addEventListener('click', ()=>{
-    //         console.log(menuOpened)
-            
-    //     })
-
-    // }, [])
-
     React.useEffect(()=>{
         console.log(activeObject)
     }, [activeObject])
@@ -33,7 +22,7 @@ export function App() {
 
     React.useEffect(()=>{
         initScene(activeObject, setActiveObject)
-    }, [])  
+    }, [])
 
 return (
 <>
@@ -66,7 +55,22 @@ return (
                     <InfoOutlinedIcon fontSize='inherit'/>
                 </div>
                 <div className='info-content'>
-                    this is info
+                    <ul>
+                        <li>
+                            To look around move your mouse -
+                        
+                            <br/>Left click & move mouse to rotate camera.
+                        
+                            <br/>Right click & move mouse to move camera.
+                        </li>
+                        <li>To add wifi on the wall -
+                            <br/>In menu click on "Add wifi button" and drag object noto wall.
+
+                        </li>
+                        <li>Select object by clicking on it.</li>
+                        <li>You can delete selected object in option box in top right corner of screen.</li>
+                        <li>You can edit scene use GUI controls, in top right of screen ("Open Controls") </li>
+                    </ul>
                 </div>
                 {activeObject ? <>
                     <div className='menu-box' id='object-properties'>
@@ -74,10 +78,10 @@ return (
                             <li id='deleteObject'>
                                 Delete object
                             </li>
-                            <li id='showRange'>
+                            {/* <li id='showRange'>
                                 <label htmlFor="show-range">Show range</label>
                                 <input type="checkbox" name="" id="show-range" />
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </> : <></>}
