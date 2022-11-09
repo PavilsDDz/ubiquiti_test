@@ -1,7 +1,7 @@
-# Ubiquity test assignment
+#Ubiquity test assignment
 Basic 3d scene with models and interactions. Built with THREE.js
 
-## installation
+##installation
 
 to install project run *npm install*
 to open project in browser run *npm run start*   
